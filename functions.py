@@ -95,7 +95,7 @@ class Motor:
             if self.current_pos < 600:
                 self.current_pos += 5
                 self.current_pos_grad = self.umrechnung(self.current_pos)       # Umrechnung in Grad
-                self.servos.set_pwm(self.__kanal, 0, self.current_pos)          # Befehlt an Motor
+                self.servos.set_pwm(self.__kanal, 0, self.current_pos)          # Befehl an Motor
                 time.sleep(0.15)                                                # Latenz der Widerstände beachten!
             # Rechter Anschlag erreicht
             else:
