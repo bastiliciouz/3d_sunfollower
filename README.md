@@ -1,5 +1,5 @@
 # 3d_sunfollower
-Easy way to follow the sun with 2 servos and photo resistors
+Easy way to follow the sun with 2 servos and  4 photo resistors
 
 - First of all: Yes, the comments within the code are in German. Just give me a hint whether you need it in English and I'll translate it.
 - And second: Python newbie, please be patient. Thanks!
