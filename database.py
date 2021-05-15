@@ -20,7 +20,7 @@ class DBConnect:
         except Exception as e:
             print(e)
 
-    def insert_aktuell(self, current_pos_unten, current_pos_oben):
+    def insert_aktuelle_position(self, current_pos_unten, current_pos_oben):
         try:
             with self.__db_connection.cursor() as cursor:
                 cursor.execute(f"""INSERT INTO
@@ -31,7 +31,7 @@ class DBConnect:
         except Exception as e:
             print(e)
 
-    def insert_error(self, message):
+    def insert_error_message(self, message):
         try:
             with self.__db_connection.cursor() as cursor:
                 cursor.execute(f"""INSERT INTO

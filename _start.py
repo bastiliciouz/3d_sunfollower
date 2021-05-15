@@ -73,7 +73,7 @@ class SunfollowerApplication:
 
             # Abgleich der Positionen. Falls abweichend: Datenbankeintrag
             if pos_temp_0 != self.__motoren[0].current_pos_grad or pos_temp_1 != self.__motoren[1].current_pos_grad:
-                self.__db_connect.insert_aktuell(self.__motoren[0].current_pos_grad, self.__motoren[1].current_pos_grad)
+                self.__db_connect.insert_aktuelle_position(self.__motoren[0].current_pos_grad, self.__motoren[1].current_pos_grad)
 
 
 # Start Application

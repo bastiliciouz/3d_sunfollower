@@ -33,7 +33,7 @@ class Sensor:
             self.__sensorwert = self.__sensor.value
             return self.__sensorwert
         except Exception as e:
-            self.__db_connect.insert_error(e)
+            self.__db_connect.insert_error_message(e)
             return f"Sensor Error auf Kanal {self.__kanal}"
 
 
@@ -88,7 +88,7 @@ class Motor:
                 time.sleep(0.15)
 
         except Exception as e:
-            self.__db_connect.insert_error(e)
+            self.__db_connect.insert_error_message(e)
             return f"Error auf Motor Kanal {self.__kanal}"
 
     def bewegung_rechts(self):
@@ -106,7 +106,7 @@ class Motor:
                 time.sleep(0.15)
 
         except Exception as e:
-            self.__db_connect.insert_error(e)
+            self.__db_connect.insert_error_message(e)
             return f"Error auf Motor Kanal {self.__kanal}"
 
     def umrechnung(self, wert):
