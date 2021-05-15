@@ -16,7 +16,7 @@ class DBConnect:
             self.__db_connection = pymysql.connect(host=f"{user.host}",
                                                    user=f"{user.benutzer}",
                                                    password=f"{user.passwd}",
-                                                   database=f"{user.db_connection}")
+                                                   database=f"{user.db}")
             print("\n    +++Database connected+++")
         except Exception as e:
             print(e)

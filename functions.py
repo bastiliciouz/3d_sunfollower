@@ -43,11 +43,11 @@ class Motor:
     anzahl = 0
 
     def __init__(self, kanal, servos, db_connect):
-        self.__kanal = kanal  # Servo Kanal
+        self._kanal = kanal  # Servo Kanal
         self.current_pos = 375  # Aktuelle Position
         self.current_pos_grad = 90  # Aktuelle Position in Grad
         self.servos = servos  # Initialisiertes PWM-Modul
-        self.servos.set_pwm(self.__kanal, 0, self.current_pos)  # Initiales Setzen auf 90°
+        self.servos.set_pwm(self._kanal, 0, self.current_pos)  # Initiales Setzen auf 90°
         self.__db_connect = db_connect  # Einmalig in Application initialisiert, übergeben zur Nutzung
 
         Motor.anzahl += 1  # Anzahl der initialisierten Motoren erhöhen
@@ -82,7 +82,7 @@ class Motor:
             if self.current_pos > 150:
                 self.current_pos -= 5
                 self.current_pos_grad = self.umrechnung(self.current_pos)  # Umrechnung in Grad
-                self.servos.set_pwm(self.__kanal, 0, self.current_pos)  # Befehl an Motor
+                self.servos.set_pwm(self._kanal, 0, self.current_pos)  # Befehl an Motor
                 time.sleep(0.15)  # Latenz der Widerstände beachten!
             # Linker Anschlag erreicht
             else:
@@ -91,7 +91,7 @@ class Motor:
 
         except Exception as e:
             self.__db_connect.insert_error_message(e)
-            return f"Error auf Motor Kanal {self.__kanal}"
+            return f"Error auf Motor Kanal {self._kanal}"
 
     def bewegung_rechts(self):
         """Bewegung von Motor X nach Rechts.
@@ -100,7 +100,7 @@ class Motor:
             if self.current_pos < 600:
                 self.current_pos += 5
                 self.current_pos_grad = self.umrechnung(self.current_pos)  # Umrechnung in Grad
-                self.servos.set_pwm(self.__kanal, 0, self.current_pos)  # Befehl an Motor
+                self.servos.set_pwm(self._kanal, 0, self.current_pos)  # Befehl an Motor
                 time.sleep(0.15)  # Latenz der Widerstände beachten!
             # Rechter Anschlag erreicht
             else:
@@ -109,7 +109,7 @@ class Motor:
 
         except Exception as e:
             self.__db_connect.insert_error_message(e)
-            return f"Error auf Motor Kanal {self.__kanal}"
+            return f"Error auf Motor Kanal {self._kanal}"
 
     def umrechnung(self, wert):
         """Simple Funktion um den Wert der Anwendung in Grad umzurechnen.
