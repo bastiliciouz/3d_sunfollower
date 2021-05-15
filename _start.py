@@ -6,7 +6,7 @@ import busio
 import adafruit_ads1x15.ads1115 as ads
 import Adafruit_PCA9685 as pca
 import functions as func                # functions.py
-import database as db                   # database.py
+from database import DBConnect          # database.py
 
 i2c_bus = busio.I2C(board.SCL, board.SDA)       # Initialisierung I2C Bus
 ad_wandler = ads.ADS1115(i2c_bus)               # Initialisierung AD-Wandler
@@ -16,18 +16,20 @@ servos.set_pwm_freq(60)                         # Frequenz in Hz für PWM
 schwellwert = 200                               # Definierter Schwellwert um Änderungen auszulösen
 anzeige = True                                  # Anzeige auf Kommandozeile an = True oder aus = False
 
+db_connect = DBConnect()                        # Datenbank Verbindung
+
 # Initialisierung aller Sensor-Objekte
 sens = list(range(4))                           # Liste der Sensoren
 kanaele = [ads.P0, ads.P1, ads.P2, ads.P3]      # Kanäle des AD Reihenfolge: OL = 3, OR = 0, UL = 2, UR = 1
 for value in range(0, 4):                       # Erstellung der Sensor-Objekte
     nummer = value
     kanal = kanaele[value]
-    sens[value] = func.Sensor(nummer, ad_wandler, kanal)
+    sens[value] = func.Sensor(nummer, ad_wandler, kanal,db_connect)
 
 # Initialisierung aller Motor-Objekte
 motoren = list(range(2))                        # Liste der Motoren, Reihenfolge: 0 = Unten, 1 = Oben
 for value in range(0, 2):                       # Erstellung der Motor-Objekte
-    motoren[value] = func.Motor(value, servos)
+    motoren[value] = func.Motor(value, servos,db_connect)
 
 # Initiale Ausgabe auf der Konsole
 print(f"""    ---Sonnenlicht-Sensor---
@@ -58,4 +60,4 @@ while True:
 
     # Abgleich der Positionen. Falls abweichend: Datenbankeintrag
     if pos_temp_0 != motoren[0].current_pos_grad or pos_temp_1 != motoren[1].current_pos_grad:
-        db.aktuell(motoren[0].current_pos_grad, motoren[1].current_pos_grad)
+        db_connect.insert_aktuell(motoren[0].current_pos_grad, motoren[1].current_pos_grad)

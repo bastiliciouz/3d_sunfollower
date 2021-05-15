@@ -8,13 +8,14 @@ import database as db                            # database.py
 class Sensor:
     anzahl = 0
 
-    def __init__(self, nummer, ad_wandler, kanal):
+    def __init__(self, nummer, ad_wandler, kanal, db_connect):
         self.__nummer = nummer                      # Durchlaufende Nummer
         self.__ad_wandler = ad_wandler              # Initialisierter AD-Wandler
         self.__kanal = kanal                        # Kanal des Sensors
 
         self.__sensor = AnalogIn(self.__ad_wandler, self.__kanal)   # Initialisierung des Kanals
         self.__sensorwert = 0                                       # Ausgelesener Wert
+        self.__db_connect = db_connect
 
         Sensor.anzahl += 1                                          # Anzahl der initialisierten Sensoren erhöhen
 
@@ -31,19 +32,20 @@ class Sensor:
             self.__sensorwert = self.__sensor.value
             return self.__sensorwert
         except Exception as e:
-            db.error(e)
+            self.__db_connect.insert_error(e)
             return f"Sensor Error auf Kanal {self.__kanal}"
 
 
 class Motor:
     anzahl = 0
 
-    def __init__(self, kanal, servos):
+    def __init__(self, kanal, servos, db_connect):
         self.__kanal = kanal                                    # Servo Kanal
         self.current_pos = 375                                  # Aktuelle Position
         self.current_pos_grad = 90                              # Aktuelle Position in Grad
         self.servos = servos                                    # Initialisiertes PWM-Modul
         self.servos.set_pwm(self.__kanal, 0, self.current_pos)  # Initiales Setzen auf 90°
+        self.__db_connect = db_connect
 
         Motor.anzahl += 1                                       # Anzahl der initialisierten Motoren erhöhen
 
@@ -85,7 +87,7 @@ class Motor:
                 time.sleep(0.15)
 
         except Exception as e:
-            db.error(e)
+            self.__db_connect.insert_error(e)
             return f"Error auf Motor Kanal {self.__kanal}"
 
     def bewegung_rechts(self):
@@ -103,7 +105,7 @@ class Motor:
                 time.sleep(0.15)
 
         except Exception as e:
-            db.error(e)
+            self.__db_connect.insert_error(e)
             return f"Error auf Motor Kanal {self.__kanal}"
 
     def umrechnung(self, wert):
