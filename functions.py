@@ -1,23 +1,24 @@
 #!/usr/bin/python3.7
 # -*-coding: utf-8-*
 
-from adafruit_ads1x15.analog_in import AnalogIn
 import time
-import database as db                            # database.py
+
+from adafruit_ads1x15.analog_in import AnalogIn
+
 
 class Sensor:
     anzahl = 0
 
     def __init__(self, nummer, ad_wandler, kanal, db_connect):
-        self.__nummer = nummer                      # Durchlaufende Nummer
-        self.__ad_wandler = ad_wandler              # Initialisierter AD-Wandler
-        self.__kanal = kanal                        # Kanal des Sensors
+        self.__nummer = nummer  # Durchlaufende Nummer
+        self.__ad_wandler = ad_wandler  # Initialisierter AD-Wandler
+        self.__kanal = kanal  # Kanal des Sensors
 
-        self.__sensor = AnalogIn(self.__ad_wandler, self.__kanal)   # Initialisierung des Kanals
-        self.__sensorwert = 0                                       # Ausgelesener Wert
+        self.__sensor = AnalogIn(self.__ad_wandler, self.__kanal)  # Initialisierung des Kanals
+        self.__sensorwert = 0  # Ausgelesener Wert
         self.__db_connect = db_connect
 
-        Sensor.anzahl += 1                                          # Anzahl der initialisierten Sensoren erhöhen
+        Sensor.anzahl += 1  # Anzahl der initialisierten Sensoren erhöhen
 
     def __del__(self):
         Sensor.anzahl -= 1
@@ -40,14 +41,14 @@ class Motor:
     anzahl = 0
 
     def __init__(self, kanal, servos, db_connect):
-        self.__kanal = kanal                                    # Servo Kanal
-        self.current_pos = 375                                  # Aktuelle Position
-        self.current_pos_grad = 90                              # Aktuelle Position in Grad
-        self.servos = servos                                    # Initialisiertes PWM-Modul
+        self.__kanal = kanal  # Servo Kanal
+        self.current_pos = 375  # Aktuelle Position
+        self.current_pos_grad = 90  # Aktuelle Position in Grad
+        self.servos = servos  # Initialisiertes PWM-Modul
         self.servos.set_pwm(self.__kanal, 0, self.current_pos)  # Initiales Setzen auf 90°
         self.__db_connect = db_connect
 
-        Motor.anzahl += 1                                       # Anzahl der initialisierten Motoren erhöhen
+        Motor.anzahl += 1  # Anzahl der initialisierten Motoren erhöhen
 
     def __del__(self):
         Motor.anzahl -= 1
@@ -78,9 +79,9 @@ class Motor:
         try:
             if self.current_pos > 150:
                 self.current_pos -= 5
-                self.current_pos_grad = self.umrechnung(self.current_pos)       # Umrechnung in Grad
-                self.servos.set_pwm(self.__kanal, 0, self.current_pos)          # Befehl an Motor
-                time.sleep(0.15)                                                # Latenz der Widerstände beachten!
+                self.current_pos_grad = self.umrechnung(self.current_pos)  # Umrechnung in Grad
+                self.servos.set_pwm(self.__kanal, 0, self.current_pos)  # Befehl an Motor
+                time.sleep(0.15)  # Latenz der Widerstände beachten!
             # Linker Anschlag erreicht
             else:
                 pass
@@ -96,9 +97,9 @@ class Motor:
         try:
             if self.current_pos < 600:
                 self.current_pos += 5
-                self.current_pos_grad = self.umrechnung(self.current_pos)       # Umrechnung in Grad
-                self.servos.set_pwm(self.__kanal, 0, self.current_pos)          # Befehl an Motor
-                time.sleep(0.15)                                                # Latenz der Widerstände beachten!
+                self.current_pos_grad = self.umrechnung(self.current_pos)  # Umrechnung in Grad
+                self.servos.set_pwm(self.__kanal, 0, self.current_pos)  # Befehl an Motor
+                time.sleep(0.15)  # Latenz der Widerstände beachten!
             # Rechter Anschlag erreicht
             else:
                 pass
@@ -112,4 +113,4 @@ class Motor:
         """Simple Funktion um den Wert der Anwendung in Grad umzurechnen.
         Wert 2.5 = 1°. Dabei sind 150=0° und 600=180° das Maximum der Servos"""
         self.wert = wert
-        return int((self.wert-150)/2.5)
+        return int((self.wert - 150) / 2.5)

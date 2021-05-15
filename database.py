@@ -1,8 +1,9 @@
 #!/usr/bin/python3.7
 # -*-coding: utf-8-*
 
-import database_user as user  # database_user.py
 import pymysql
+
+import database_user as user  # database_user.py
 
 
 class DBConnect:
