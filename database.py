@@ -6,6 +6,8 @@ import pymysql
 
 
 class DBConnect:
+    """Klasse zur zentralen Initialisierung der Datenbankverbindung und des Zugriffs"""
+
     def __init__(self):
         self.init_db_connection()
 
@@ -20,6 +22,7 @@ class DBConnect:
             print(e)
 
     def insert_aktuelle_position(self, current_pos_unten, current_pos_oben):
+        """DB Insert der aktuellen Servo Position in die Tabelle current_pos"""
         try:
             with self.__db_connection.cursor() as cursor:
                 cursor.execute(f"""INSERT INTO
@@ -31,6 +34,7 @@ class DBConnect:
             print(e)
 
     def insert_error_message(self, message):
+        """DB Insert von error message in die Tabelle errors"""
         try:
             with self.__db_connection.cursor() as cursor:
                 cursor.execute(f"""INSERT INTO
