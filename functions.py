@@ -43,11 +43,11 @@ class Motor:
     anzahl = 0
 
     def __init__(self, kanal, servos, db_connect):
-        self._kanal = kanal  # Servo Kanal
-        self.current_pos = 375  # Aktuelle Position
-        self.current_pos_grad = 90  # Aktuelle Position in Grad
-        self.servos = servos  # Initialisiertes PWM-Modul
-        self.servos.set_pwm(self._kanal, 0, self.current_pos)  # Initiales Setzen auf 90°
+        self.__kanal = kanal  # Servo Kanal
+        self.__current_pos = 375  # Aktuelle Position
+        self.__current_pos_grad = 90  # Aktuelle Position in Grad
+        self.__servos = servos  # Initialisiertes PWM-Modul
+        self.__servos.set_pwm(self.__kanal, 0, self.__current_pos)  # Initiales Setzen auf 90°
         self.__db_connect = db_connect  # Einmalig in Application initialisiert, übergeben zur Nutzung
 
         Motor.anzahl += 1  # Anzahl der initialisierten Motoren erhöhen
@@ -79,10 +79,10 @@ class Motor:
         """Bewegung von Motor X nach Links.
         Das Minimum liegt bei 150 = 0°, darüber hinaus keine Aktion."""
         try:
-            if self.current_pos > 150:
-                self.current_pos -= 5
-                self.current_pos_grad = self.umrechnung(self.current_pos)  # Umrechnung in Grad
-                self.servos.set_pwm(self._kanal, 0, self.current_pos)  # Befehl an Motor
+            if self.__current_pos > 150:
+                self.__current_pos -= 5
+                self.__current_pos_grad = self.umrechnung(self.__current_pos)  # Umrechnung in Grad
+                self.__servos.set_pwm(self.__kanal, 0, self.__current_pos)  # Befehl an Motor
                 time.sleep(0.15)  # Latenz der Widerstände beachten!
             # Linker Anschlag erreicht
             else:
@@ -91,16 +91,16 @@ class Motor:
 
         except Exception as e:
             self.__db_connect.insert_error_message(e)
-            return f"Error auf Motor Kanal {self._kanal}"
+            return f"Error auf Motor Kanal {self.__kanal}"
 
     def bewegung_rechts(self):
         """Bewegung von Motor X nach Rechts.
         Das Maximum liegt bei 600 = 180°, darüber hinaus keine Aktion."""
         try:
-            if self.current_pos < 600:
-                self.current_pos += 5
-                self.current_pos_grad = self.umrechnung(self.current_pos)  # Umrechnung in Grad
-                self.servos.set_pwm(self._kanal, 0, self.current_pos)  # Befehl an Motor
+            if self.__current_pos < 600:
+                self.__current_pos += 5
+                self.__current_pos_grad = self.umrechnung(self.__current_pos)  # Umrechnung in Grad
+                self.__servos.set_pwm(self.__kanal, 0, self.__current_pos)  # Befehl an Motor
                 time.sleep(0.15)  # Latenz der Widerstände beachten!
             # Rechter Anschlag erreicht
             else:
@@ -109,10 +109,16 @@ class Motor:
 
         except Exception as e:
             self.__db_connect.insert_error_message(e)
-            return f"Error auf Motor Kanal {self._kanal}"
+            return f"Error auf Motor Kanal {self.__kanal}"
 
     def umrechnung(self, wert):
         """Simple Funktion um den Wert der Anwendung in Grad umzurechnen.
         Wert 2.5 = 1°. Dabei sind 150=0° und 600=180° das Maximum der Servos"""
         self.wert = wert
         return int((self.wert - 150) / 2.5)
+
+    def get_current_pos_grad(self):
+        return self.__current_pos
+
+    def get_kanal(self):
+        return self.__kanal

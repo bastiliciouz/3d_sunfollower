@@ -59,11 +59,11 @@ class SunfollowerApplication:
                 {self.__sens[1].nummer()}: {self.__sens[1].akt_wert()}\
                 {self.__sens[2].nummer()}: {self.__sens[2].akt_wert()}\
                 {self.__sens[3].nummer()}: {self.__sens[3].akt_wert()}\
-                Motor {self.__motoren[0]._kanal}: {self.__motoren[0].current_pos_grad}\
-                {self.__motoren[1]._kanal}: {self.__motoren[1].current_pos_grad}")
+                Motor {self.__motoren[0].get_kanal()}: {self.__motoren[0].get_current_pos_grad()}\
+                {self.__motoren[1].get_kanal()}: {self.__motoren[1].get_current_pos_grad()}")
 
             # Zwischenspeicherung der Positionen
-            pos_temp_0, pos_temp_1 = self.__motoren[0].current_pos_grad, self.__motoren[1].current_pos_grad
+            pos_temp_0, pos_temp_1 = self.__motoren[0].get_current_pos_grad(), self.__motoren[1].get_current_pos_grad()
 
             # Aufruf der eigentlichen Funktionen. Kern des Programms.
             # -----------------------
@@ -72,8 +72,8 @@ class SunfollowerApplication:
             # -----------------------
 
             # Abgleich der Positionen. Falls abweichend: Datenbankeintrag
-            if pos_temp_0 != self.__motoren[0].current_pos_grad or pos_temp_1 != self.__motoren[1].current_pos_grad:
-                self.__db_connect.insert_aktuelle_position(self.__motoren[0].current_pos_grad, self.__motoren[1].current_pos_grad)
+            if pos_temp_0 != self.__motoren[0].get_current_pos_grad() or pos_temp_1 != self.__motoren[1].get_current_pos_grad():
+                self.__db_connect.insert_aktuelle_position(self.__motoren[0].get_current_pos_grad(), self.__motoren[1].get_current_pos_grad())
 
 
 # Start Application
