@@ -16,7 +16,7 @@ class Sensor:
 
         self.__sensor = AnalogIn(self.__ad_wandler, self.__kanal)  # Initialisierung des Kanals
         self.__sensorwert = 0  # Ausgelesener Wert
-        self.__db_connect = db_connect
+        self.__db_connect = db_connect  # Einmalig in Application initialisiert, übergeben zur Nutzung
 
         Sensor.anzahl += 1  # Anzahl der initialisierten Sensoren erhöhen
 
@@ -46,7 +46,7 @@ class Motor:
         self.current_pos_grad = 90  # Aktuelle Position in Grad
         self.servos = servos  # Initialisiertes PWM-Modul
         self.servos.set_pwm(self.__kanal, 0, self.current_pos)  # Initiales Setzen auf 90°
-        self.__db_connect = db_connect
+        self.__db_connect = db_connect  # Einmalig in Application initialisiert, übergeben zur Nutzung
 
         Motor.anzahl += 1  # Anzahl der initialisierten Motoren erhöhen
 
