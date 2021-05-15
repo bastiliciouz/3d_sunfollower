@@ -7,6 +7,7 @@ from adafruit_ads1x15.analog_in import AnalogIn
 
 
 class Sensor:
+    """Sensorklasse welche für das Auslesen der Hardwaresensoren zuständig ist"""
     anzahl = 0
 
     def __init__(self, nummer, ad_wandler, kanal, db_connect):
@@ -23,7 +24,7 @@ class Sensor:
     def __del__(self):
         Sensor.anzahl -= 1
 
-    def nummer(self):
+    def nummer(self) -> int:
         """Ausgabe der Sensor-Nummer für die Konsolenanzeige"""
         return self.__nummer
 
@@ -38,6 +39,7 @@ class Sensor:
 
 
 class Motor:
+    """Motorklasse welche die Hardwareservos ansteuert"""
     anzahl = 0
 
     def __init__(self, kanal, servos, db_connect):
